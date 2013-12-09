@@ -5,15 +5,7 @@ header('Content-type: text/html; charset=UTF-8');
 $path = pathinfo($_SERVER['PHP_SELF']);
 $file = $path['filename'];
 
-$db_username="root";
-$db_password="root";
-$database="wukwebbi_original";
-$host="localhost";
-
-$db = new mysqli($host, $db_username, $db_password, $database);
-if ($db->connect_errno) {
-  die("Failed to connect to MySQL: (" . $db->connect_errno . ") " . $db->connect_error);
-}
+require "db_con.php";
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +14,9 @@ if ($db->connect_errno) {
     <meta charset="utf-8">
     <title>JENSEN</title>
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/ui/jquery-ui-1.10.3.custom.css" />
     <script src="javascript/jquery.min.js"></script>
+    <script src="javascript/jquery-ui-1.10.3.custom.min.js"></script>
     <script src='javascript/fullcalendar.min.js'></script>
     <script type="text/javascript">
       $(document).ready(function(){
@@ -37,7 +31,8 @@ if ($db->connect_errno) {
           <h1>JENSEN</h1> 
           <div id="nav">
             <!-- sätt class "active" beroende på filnamnet -->
-            <a class="<?php if($file=="booking"){echo "active";} ?>" href="booking.php">BOKA SAL</a>
+            <a class="<?php if($file=="index"){echo "active";} ?>" href="index.php">STARTSIDA</a>
+            <a class="<?php if($file=="booking"){echo "active";} ?>" href="booking.php?course=1">BOKA KLASSRUM</a>
           </div>
         </div>
       </div>

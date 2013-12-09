@@ -1,6 +1,6 @@
 body {
 	font-family: Helvetica, Arial, Verdana, Sans-serif;
-	font-size: 11pt;
+	font-size: 12px;
 }
 
 h1 {
@@ -12,7 +12,7 @@ h1 {
 
 hr {
 	border: none;
-	border-top: 1px solid black;
+	border-top: 1px solid grey;
 }
 
 a {
@@ -26,8 +26,20 @@ a:hover {
 }
 
 .active {
-	color: #77AEBF;
+	font-weight: bold;
 }
+
+.clearfix {
+	clear: both;
+}
+
+.error {
+	border: 2px solid red;
+}
+
+
+
+/* MAIN STRUCTURE */
 
 #wrapper {
 	width:100%;
@@ -49,7 +61,7 @@ a:hover {
 }	
 
 #innerHeader {
-	width: 700px;
+	width: 800px;
 	margin: 0 auto;
 }
 
@@ -66,18 +78,8 @@ a:hover {
 #content {
 	margin: 0 auto;
 	margin-top: 150px;
-	width: 700px;
+	width: 800px;
 	color: #444;
-}
-
-#content img {
-	margin-right: 5px;
-	margin-bottom: 5px;
-	-webkit-transition: opacity 0.2s;
-}
-
-#content img:hover {
-	opacity: 0.6;
 }
 
 #footer {
@@ -96,48 +98,164 @@ a:hover {
 	padding-left: 20px;
 }
 
+
 .left {
 	float: left;
-	width: 28%;
+	width: 200px;
 }
 
 .right {
 	float: right;
-	width: 70%;
+	width: 465px;
 }
 
-.clearfix {
-	clear: both;
+.box {
+	padding: 5px;
+	background: #fafafa;
+	-webkit-box-shadow: 0px 1px 5px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    0px 1px 5px rgba(50, 50, 50, 0.75);
+	box-shadow:         0px 1px 5px rgba(50, 50, 50, 0.75);
+	border-radius: 5px;
 }
 
-select {
-	width: 80%;
+
+
+/* BOOKING FORM */
+
+#classroom, #timeperiod {
+	width: 200px;
 	margin-bottom: 10px;
 }
 
-input[type=text] {
-	width: 80%;
+#startdate, #enddate {
+	width: 91px;
+	margin: 0;
 	margin-bottom: 10px;
 }
+
+[type=submit] {
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+#error {
+	color: red;
+}
+
+#success {
+	color: green;
+}
+
+
+
+/* COURSE INFO / DELETE FORM */
+
+#courseinfo {
+	margin-top: 30px;
+}
+
+#courseinfo h3:first-child {
+	margin-top: 0;
+}
+
+#courseinfo p {
+	margin-bottom: 20px;
+}
+
+#courseinfo .booking_classroom {
+	font-weight: bold;
+	margin-top: 20px;
+}
+
+#courseinfo .booking_date {
+	margin-left: 10px;
+	margin-top: 8px;
+	font-size: 11px;
+}
+
+#courseinfo .delete {
+	color: red;
+	margin-left: 20px;
+	cursor: pointer;
+}
+
+
+
+/* BOOKING CALENDAR (MISC) */
 
 #calendar {
 	
 }
 
+#dialog {
+	display: none;
+}
+
+#dialog [type=button] {
+	width: 71px;
+	height: 20px;
+	margin: 0;
+	padding: 0;
+	font-size: 11px;
+}
+
+#legend {
+	font-size: 11px;
+	margin-bottom: 30px;
+}
+
+#legend .booked_fm, #legend .booked_em {
+	display: inline-block;
+	height: 3px;
+	width: 14px;
+	margin-right: 5px;
+	margin-bottom: 2px;
+}
+
+#legend .booked_fm {
+	background: #EB6565;
+	margin-top: 5px;
+}
+
+#legend .booked_em {
+	background: #F79859;
+	margin-top: 15px;
+	margin-left: 15px;
+}
+
+#legend .booking_start, #legend .booking_end {
+	display: inline-block;
+	margin-right: 5px;
+	margin-left: 15px;
+	width: 10px;
+	height: 10px;
+	border-radius: 5px;
+}
+
+#legend .booking_start {
+	background: #B0DDF5;
+}
+
+#legend .booking_end {
+	background: #B7E8B3;
+}
+
+
+
+/* BOOKING CALENDAR */
+
 #calendar .month {
 	margin-bottom: 30px;
-	
 }
 
 #calendar .dashes {
 	position: absolute;
-	margin-top: 20px;
+	margin-top: 21px;
 	border-top: 1px dashed #ccc;
 	border-bottom: 1px dashed #ccc;
 	height: 9px;
 	width: 100%;
 	z-index: -1;
-
 }
 
 #calendar .startdate {
@@ -155,17 +273,10 @@ input[type=text] {
 	height: 10px;
 	float: left;
 	padding-top: 26px;
+	padding-bottom: 5px;
 	font-size: 10px;
 	text-align: center;
 	cursor: pointer;
-}
-
-#calendar .booking_start {
-	background: blue;
-}
-
-#calendar .booking_end {
-	
 }
 
 #calendar .day div {
@@ -177,47 +288,40 @@ input[type=text] {
 }
 
 #calendar .booked_fm div:nth-child(1) {
-	background: red;
+	background: #EB6565;
 	margin-top: -20px;
 	display: block;
 }
 
 #calendar .booked_em div:nth-child(2) {
-	background: orange;
+	background: #F79859;
 	margin-top: -10px;
 	display: block;
 }
 
 #calendar .day span {
 	display: none;
+	width: 14px;
+	height: 14px;
+	border-radius: 7px;
 }
 
 #calendar .day:hover span {
-	display: inline;
+	display: block;
 }
 
-#legend {
-	font-size: 11px;
-	margin-bottom: 20px;
+#calendar .selected span {
+	display: block;
+	font-weight: bold;
 }
 
-#legend .booked_fm, #legend .booked_em {
-	position: relative;
-	display: inline-block;
-	height: 3px;
-	width: 14px;
-	margin-right: 5px;
-	margin-bottom: 2px;
+#calendar .booking_start span {
+	display: block;
+	background: #B0DDF5;
 }
 
-#legend .booked_fm {
-	background: red;
-	margin-top: 5px;
-}
-
-#legend .booked_em {
-	background: orange;
-	margin-top: 15px;
-	margin-left: 20px;
+#calendar .booking_end span {
+	display: block;
+	background: #B7E8B3;
 }
 
