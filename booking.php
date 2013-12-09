@@ -65,18 +65,6 @@ else if (isset($function) && $function == "delete") {
 
 <script>
 $(function(){
-  /*$('#calendar').fullCalendar({
-    weekends: false,
-    events: [
-        {
-            title: 'My Event',
-            start: '2013-12-05',
-            description: 'This is a cool event'
-        }
-        
-    ]
-  });*/
-
   $('#classroom').bind('change', function(){
     if ($(this).val().length > 0)
       $('#selectform').submit();
