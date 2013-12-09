@@ -1,0 +1,223 @@
+body {
+	font-family: Helvetica, Arial, Verdana, Sans-serif;
+	font-size: 11pt;
+}
+
+h1 {
+	margin: 0;
+	display: block;
+	float: left;
+	color: #444;
+}
+
+hr {
+	border: none;
+	border-top: 1px solid black;
+}
+
+a {
+	text-decoration: none;
+	color: #444;
+	-webkit-transition: opacity 0.2s;
+}
+
+a:hover {
+	opacity: 0.5;
+}
+
+.active {
+	color: #77AEBF;
+}
+
+#wrapper {
+	width:100%;
+	margin-left:auto;
+	margin-right:auto
+}
+
+#header {
+	padding-top: 50px;
+	padding-bottom: 20px;
+	width: 100%;
+	top: 0; left: 0;
+	position: fixed;
+	background: #fafafa;
+	-webkit-box-shadow: 0px 1px 5px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    0px 1px 5px rgba(50, 50, 50, 0.75);
+	box-shadow:         0px 1px 5px rgba(50, 50, 50, 0.75);
+	z-index: 10;
+}	
+
+#innerHeader {
+	width: 700px;
+	margin: 0 auto;
+}
+
+#nav {
+	margin-top: 15px;
+	float:right;
+	bottom: 0;
+}
+
+#nav a {
+	margin-left: 10px;
+}
+
+#content {
+	margin: 0 auto;
+	margin-top: 150px;
+	width: 700px;
+	color: #444;
+}
+
+#content img {
+	margin-right: 5px;
+	margin-bottom: 5px;
+	-webkit-transition: opacity 0.2s;
+}
+
+#content img:hover {
+	opacity: 0.6;
+}
+
+#footer {
+	margin: 0 auto;
+	margin-top: 50px;
+	width: 1000px;
+	text-align:center;
+	padding-top: 20px;
+	color: #aaa;
+	font-size: 10pt;
+	border-top: 1px solid #ddd;
+}
+
+#footer span {
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+.left {
+	float: left;
+	width: 28%;
+}
+
+.right {
+	float: right;
+	width: 70%;
+}
+
+.clearfix {
+	clear: both;
+}
+
+select {
+	width: 80%;
+	margin-bottom: 10px;
+}
+
+input[type=text] {
+	width: 80%;
+	margin-bottom: 10px;
+}
+
+#calendar {
+	
+}
+
+#calendar .month {
+	margin-bottom: 30px;
+	
+}
+
+#calendar .dashes {
+	position: absolute;
+	margin-top: 20px;
+	border-top: 1px dashed #ccc;
+	border-bottom: 1px dashed #ccc;
+	height: 9px;
+	width: 100%;
+	z-index: -1;
+
+}
+
+#calendar .startdate {
+	float: left;
+	font-size: 11px;
+}
+
+#calendar .enddate {
+	float: right;
+	font-size: 11px;
+}
+
+#calendar .day {
+	width: 15px;
+	height: 10px;
+	float: left;
+	padding-top: 26px;
+	font-size: 10px;
+	text-align: center;
+	cursor: pointer;
+}
+
+#calendar .booking_start {
+	background: blue;
+}
+
+#calendar .booking_end {
+	
+}
+
+#calendar .day div {
+	position: absolute;
+	height: 3px;
+	width: 14px;
+	margin-right: 1px;
+	display: none;
+}
+
+#calendar .booked_fm div:nth-child(1) {
+	background: red;
+	margin-top: -20px;
+	display: block;
+}
+
+#calendar .booked_em div:nth-child(2) {
+	background: orange;
+	margin-top: -10px;
+	display: block;
+}
+
+#calendar .day span {
+	display: none;
+}
+
+#calendar .day:hover span {
+	display: inline;
+}
+
+#legend {
+	font-size: 11px;
+	margin-bottom: 20px;
+}
+
+#legend .booked_fm, #legend .booked_em {
+	position: relative;
+	display: inline-block;
+	height: 3px;
+	width: 14px;
+	margin-right: 5px;
+	margin-bottom: 2px;
+}
+
+#legend .booked_fm {
+	background: red;
+	margin-top: 5px;
+}
+
+#legend .booked_em {
+	background: orange;
+	margin-top: 15px;
+	margin-left: 20px;
+}
+
