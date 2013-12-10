@@ -287,7 +287,27 @@ function deleteBooking(id) {
       // listan ska innehålla tidspass (INNER JOIN tbl_timeperiod)
       // listan ska innehålla namnen på klassrum (INNER JOIN tbl_classroom)
       // sortera efter klassrum -> startdatum -> tidspass
-      $query = "SELECT bk.*, tp.timeperiod_start, tp.timeperiod_end, cr.classroom_name FROM tbl_booking AS bk INNER JOIN tbl_timeperiod AS tp ON bk.timeperiod_id = tp.timeperiod_id INNER JOIN tbl_classroom AS cr ON bk.classroom_id = cr.classroom_id WHERE bk.course_id = $course_id ORDER BY bk.classroom_id, bk.booking_startdate, bk.timeperiod_id";
+      $query = "SELECT
+                  bk.*,
+                  tp.timeperiod_start,
+                  tp.timeperiod_end,
+                  cr.classroom_name
+                
+                FROM
+                  tbl_booking AS bk
+                  INNER JOIN tbl_timeperiod AS tp
+                    ON bk.timeperiod_id = tp.timeperiod_id
+                  INNER JOIN tbl_classroom AS cr
+                    ON bk.classroom_id = cr.classroom_id
+                
+                WHERE
+                  bk.course_id = $course_id
+
+                ORDER BY
+                  bk.classroom_id,
+                  bk.booking_startdate,
+                  bk.timeperiod_id";
+
       if ($result = $db->query($query)) {
         $prev_classroom = "";
 
@@ -330,7 +350,7 @@ function deleteBooking(id) {
       <input type="button" onclick="setEndDate()" value="Slutdatum" />
     </div>
 
-    <h3>Status för klassrum</h3>
+    <h3>Schema för klassrum</h3>
 
     <div id="legend">
         <div class="booked_fm"></div>Förmiddag bokad (9-12)
@@ -345,7 +365,7 @@ function deleteBooking(id) {
       // hämta bokningar som:
       // - har samma klassrum som det valda klassrummet
       // - inte redan har utgått
-      $query = "SELECT *, CURDATE() as a FROM tbl_booking WHERE classroom_id = $classroom_id AND booking_enddate > CURDATE()";
+      $query = "SELECT * FROM tbl_booking WHERE classroom_id = $classroom_id AND booking_enddate > CURDATE()";
 
       // spara bokningsdata i array för senare användning
       $bookings = array();
