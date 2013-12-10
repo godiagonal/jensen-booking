@@ -393,7 +393,7 @@ function deleteBooking(id) {
       $month_interval = new DateInterval('P1M');
 
       // fastställ hur många grupperingar som ska förekomma i datumspannet
-      // antalet månader ($month_interval) mellan startdatum och slutdatum
+      // mellan startdatum och slutdatum om man delar in det i månader ($month_interval)
       $month_period = new DatePeriod($startdate, $month_interval, $enddate);
 
       // loop för varje månad i datumspannet

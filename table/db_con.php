@@ -1,6 +1,6 @@
 <?php
 $db_username="root";
-$db_password="root";
+$db_password="";
 $database="wukwebbi_original";
 $host="localhost";
 
