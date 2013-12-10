@@ -17,7 +17,6 @@ require "db_con.php";
     <link rel="stylesheet" type="text/css" href="css/ui/jquery-ui-1.10.3.custom.css" />
     <script src="javascript/jquery.min.js"></script>
     <script src="javascript/jquery-ui-1.10.3.custom.min.js"></script>
-    <script src='javascript/fullcalendar.min.js'></script>
     <script type="text/javascript">
       $(document).ready(function(){
         // do something
