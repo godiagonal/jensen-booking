@@ -1,0 +1,217 @@
+body {
+	font-family: Helvetica, Arial, Verdana, Sans-serif;
+	font-size: 12px;
+}
+
+h1 {
+	margin: 0;
+	display: block;
+	float: left;
+	color: #444;
+}
+
+hr {
+	border: none;
+	border-top: 1px solid grey;
+}
+
+a {
+	text-decoration: none;
+	color: #444;
+	-webkit-transition: opacity 0.2s;
+}
+
+a:hover {
+	opacity: 0.5;
+}
+
+.active {
+	font-weight: bold;
+}
+
+.clearfix {
+	clear: both;
+}
+
+.error {
+	border: 2px solid red;
+}
+
+table {
+	width: 100%;
+}
+
+th {
+	text-align: left;
+}
+
+
+
+/* MAIN STRUCTURE */
+
+#wrapper {
+	width:100%;
+	margin-left:auto;
+	margin-right:auto
+}
+
+#header {
+	padding-top: 50px;
+	padding-bottom: 20px;
+	width: 100%;
+	top: 0; left: 0;
+	position: fixed;
+	background: #fafafa;
+	-webkit-box-shadow: 0px 1px 5px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    0px 1px 5px rgba(50, 50, 50, 0.75);
+	box-shadow:         0px 1px 5px rgba(50, 50, 50, 0.75);
+	z-index: 10;
+}	
+
+#innerHeader {
+	width: 800px;
+	margin: 0 auto;
+}
+
+#nav {
+	margin-top: 15px;
+	float:right;
+	bottom: 0;
+}
+
+#nav a {
+	margin-left: 10px;
+}
+
+#content {
+	margin: 0 auto;
+	margin-top: 150px;
+	width: 800px;
+	color: #444;
+}
+
+#footer {
+	margin: 0 auto;
+	margin-top: 50px;
+	width: 1000px;
+	text-align:center;
+	padding-top: 20px;
+	color: #aaa;
+	font-size: 10pt;
+	border-top: 1px solid #ddd;
+}
+
+#footer span {
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+
+.left {
+	float: left;
+	width: 220px;
+}
+
+.right {
+	float: right;
+	width: 480px;
+}
+
+.box {
+	padding: 5px;
+	background: #fafafa;
+	-webkit-box-shadow: 0px 1px 5px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    0px 1px 5px rgba(50, 50, 50, 0.75);
+	box-shadow:         0px 1px 5px rgba(50, 50, 50, 0.75);
+	border-radius: 5px;
+}
+
+
+
+/* BOOKING FORM */
+
+#classroom, #timeperiod {
+	width: 200px;
+	margin-bottom: 10px;
+}
+
+#startdate, #enddate {
+	width: 91px;
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+[type=submit] {
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+#error {
+	color: red;
+}
+
+#success {
+	color: green;
+}
+
+
+
+/* COURSE INFO / DELETE FORM */
+
+#courseinfo {
+	margin-top: 30px;
+}
+
+#courseinfo h3:first-child {
+	margin-top: 0;
+}
+
+#courseinfo p {
+	margin-bottom: 20px;
+}
+
+#courseinfo .booking_classroom {
+	font-weight: bold;
+	margin-top: 20px;
+}
+
+#courseinfo .booking_date {
+	margin-left: 10px;
+	margin-top: 8px;
+	font-size: 11px;
+}
+
+#courseinfo .delete {
+	color: red;
+	margin-left: 20px;
+	cursor: pointer;
+}
+
+
+
+/* BOOKING CALENDAR */
+
+#calendar {
+	
+}
+
+.booking_start {
+	background: #B0DDF5 !important;
+}
+
+.booking_end {
+	background: #B7E8B3 !important;
+}
+
+#dialog {
+	display: none;
+}
+
+#dialog [type=button] {
+	width: 71px;
+	height: 20px;
+	margin: 0;
+	padding: 0;
+	font-size: 11px;
+}
+

@@ -24,8 +24,8 @@ if (isset($function) && $function == "insert") {
             WHERE
               classroom_id = $classroom_id
               AND (
-                booking_startdate < '$enddate'
-                AND booking_enddate > '$startdate'
+                booking_startdate <= '$enddate'
+                AND booking_enddate >= '$startdate'
               )
               AND timeperiod_id = $timeperiod_id";
 
@@ -78,27 +78,6 @@ $(function(){
       $('#selectform').submit();
   });
 
-  // visa val av startdatum eller slutdatum när man klickar på en dag i kalendern
-  $('#calendar .day').bind('click', function(){
-    var selectedDay = $(this);
-
-    var bookedFm = selectedDay.hasClass('booked_fm');
-    var bookedEm = selectedDay.hasClass('booked_em');
-
-    if (bookedFm && bookedEm) {
-      alert('Dagen är redan bokad');
-      return;
-    }
-
-    // visa dagens nummer
-    $('#calendar .selected').removeClass('selected');
-    selectedDay.addClass('selected');
-
-    // visa tooltip under den klickade dagen
-    $('#dialog').dialog('option', { position: { my: "center top", at: "center bottom", of: $(this) }});
-    $('#dialog').dialog('open');
-  });
-
   // validera formuläret för ny bokning
   $('#insertform').bind('submit', function(){
     var error = false;
@@ -116,7 +95,7 @@ $(function(){
       error = true;
     }
 
-    if (endDate.val().length != 10) {
+    if (endDate.val().length != 10 || Date.parse( startDate.val() ) > Date.parse( endDate.val() )) {
       endDate.addClass('error');
       error = true;
     }
@@ -130,6 +109,11 @@ $(function(){
       return false;
   });
 
+  // initiera datepicker för startdatum
+  $('#startdate').datepicker({
+    dateFormat: 'yy-mm-dd'
+  });
+
   // initiera tooltip för val av startdatum eller slutdatum
   $("#dialog").dialog({
     autoOpen: false,
@@ -138,57 +122,110 @@ $(function(){
     height: 30,
     width: 150
   });
+
+  // initiera datepicker för slutdatum
+  $('#enddate').datepicker({
+    dateFormat: 'yy-mm-dd'
+  });
+
+  // initiera kalender
+  $('#calendar').fullCalendar({
+
+    timeFormat: 'H:mm { - HH:mm} ', // format på eventens tider
+
+    weekends: false, // dölj helgdagar
+
+    height: 500, // höjd på kalendern
+
+    // ajax-anrop för att hämta json-objekt med events
+    events: {
+      url: 'events.php', // url till sidan som genererar events
+      type: 'GET', // typ av anrop
+      data: {
+          classroom: $('#classroom').val() // klassrummet för vilket bokningar ska visas
+      },
+      color: 'orange',
+      textColor: 'black'
+    },
+
+    // callback för click på ett event
+    dayClick: function(date, allDay, jsEvent, view) {
+      // markera som selected för senare referens
+      $('#calendar .selected').removeClass('selected');
+      $(this).addClass('selected');
+
+      // visa tooltip under den klickade dagen
+      $('#dialog').dialog('option', { position: { my: "center top", at: "center bottom", of: $(this) }});
+      $('#dialog').dialog('open');   
+    },
+
+    // callback för click på en dag
+    eventClick: function(calEvent, jsEvent, view) {
+      // samma funktion som ovan men måste utformas lite annorlunda
+      // pga att det är en event som är klickad, inte en dag
+      var date = $.fullCalendar.formatDate(calEvent.start, 'yyyy-MM-dd');
+      var dateDiv = getCalendarDay(date);
+      $('#calendar .selected').removeClass('selected');
+      dateDiv.addClass('selected');
+
+      $('#dialog').dialog('option', { position: { my: "center top", at: "center bottom", of: dateDiv }});
+      $('#dialog').dialog('open');   
+    }
+
+  });
 });
+
+function getCalendarDay(date) {
+  return $('#calendar').find('td[data-date='+date+']');
+}
 
 // markera vald dag som startdatum
 function setStartDate() {
-  // den valda dagen
-  var selectedDay = $('#calendar .selected');
+  // hämta den valda dagen och avmarkera som selected
+  var selectedDate = $('#calendar .selected');
   $('#calendar .selected').removeClass('selected');
 
-  // gör om till date-objekt
-  var selectedDate = Date.parse( selectedDay.attr('id') );
-  var endDate = Date.parse( $('#calendar .booking_end').attr('id') );
+  // hämta (eventuellt) startdatum
+  var endDate = $('#enddate');
 
   // kolla om ett korrekt startdatum är valt
-  if (selectedDate > endDate) {
+  if (endDate.val().length > 0 && Date.parse( selectedDate.attr('data-date') ) > Date.parse( endDate.val() )) {
     alert('Startdatum måste ligga före slutdatum');
     return;
   }
 
-  // avmarkera det (eventuella) föregående startdatumet
+  // avmarkera det (eventuella) föregående startdatumet och markera det nya
   $('#calendar .booking_start').removeClass('booking_start');
-  selectedDay.addClass('booking_start');
+  selectedDate.addClass('booking_start');
 
   // lägg till den valda dagens datum i formuläret
-  $('#startdate').val( selectedDay.attr('id') );
+  $('#startdate').val( selectedDate.attr('data-date') );
 
   // göm tooltip
   $('#dialog').dialog('close');
 }
 
 // markera vald dag som slutdatum
-function setEndDate(div) {
-  // den valda dagen
-  var selectedDay = $('#calendar .selected');
+function setEndDate() {
+  // hämta den valda dagen och avmarkera som selected
+  var selectedDate = $('#calendar .selected');
   $('#calendar .selected').removeClass('selected');
 
-  // gör om till date-objekt
-  var selectedDate = Date.parse( selectedDay.attr('id') );
-  var startDate = Date.parse( $('#calendar .booking_start').attr('id') );
+  // hämta (eventuellt) startdatum
+  var startDate = $('#startdate');
 
   // kolla om ett korrekt slutdatum är valt
-  if (selectedDate < startDate) {
-    alert('Slutdatum måste ligga efter startdatum');
+  if (startDate.val().length > 0 && Date.parse( selectedDate.attr('data-date') ) < Date.parse( startDate.val() )) {
+    alert('Startdatum måste ligga före slutdatum');
     return;
   }
 
-  // avmarkera det (eventuella) föregående startdatumet
+  // avmarkera det (eventuella) föregående startdatumet och markera det nya
   $('#calendar .booking_end').removeClass('booking_end');
-  selectedDay.addClass('booking_end');
+  selectedDate.addClass('booking_end');
 
   // lägg till den valda dagens datum i formuläret
-  $('#enddate').val( selectedDay.attr('id') );
+  $('#enddate').val( selectedDate.attr('data-date') );
 
   // göm tooltip
   $('#dialog').dialog('close');
@@ -292,14 +329,14 @@ function deleteBooking(id) {
                   tp.timeperiod_start,
                   tp.timeperiod_end,
                   cr.classroom_name
-                
+
                 FROM
                   tbl_booking AS bk
                   INNER JOIN tbl_timeperiod AS tp
                     ON bk.timeperiod_id = tp.timeperiod_id
                   INNER JOIN tbl_classroom AS cr
                     ON bk.classroom_id = cr.classroom_id
-                
+
                 WHERE
                   bk.course_id = $course_id
 
@@ -344,131 +381,14 @@ function deleteBooking(id) {
 <div class="right">
 
   <?php if (isset($classroom_id) && $classroom_id > 0) { ?>
-    
+
+    <h3>Bokningar för klassrum</h3>
+
+    <div id="calendar"></div>
+
     <div id="dialog">
       <input type="button" onclick="setStartDate()" value="Startdatum" />
       <input type="button" onclick="setEndDate()" value="Slutdatum" />
-    </div>
-
-    <h3>Schema för klassrum</h3>
-
-    <div id="legend">
-        <div class="booked_fm"></div>Förmiddag bokad (9-12)
-        <div class="booked_em"></div>Eftermiddag bokad (13-16)
-        <div class="booking_start"></div>Startdatum
-        <div class="booking_end"></div>Slutdatum
-    </div>
-
-    <div id="calendar">
-
-      <?php
-      // hämta bokningar som:
-      // - har samma klassrum som det valda klassrummet
-      // - inte redan har utgått
-      $query = "SELECT * FROM tbl_booking WHERE classroom_id = $classroom_id AND booking_enddate > CURDATE()";
-
-      // spara bokningsdata i array för senare användning
-      $bookings = array();
-
-      // överför data från resultatet till array
-      if ($result = $db->query($query)) {
-        while ($row = $result->fetch_assoc()) {
-          // lägg in respektive rad från databasen i arrayen $bookings
-          array_push($bookings, $row);
-        }
-        $result->free();
-      }
-
-      // startdatum för kalendern: första dagen i aktuell månad
-      // Y-m = ex. 2013-12-01
-      $startdate = new DateTime(date("Y-m"));
-
-      // slutdatum för kalendern: startdatum + 6 månader (eller mer)
-      // ex. $months_to_show = 6 -> P6M -> 6 månader
-      $enddate = clone $startdate;
-      $enddate->add(new DateInterval('P'.$months_to_show.'M'));
-
-      // fastställ hur kalendern ska grupperas
-      // P1M = 1 månad = månadsvis
-      $month_interval = new DateInterval('P1M');
-
-      // fastställ hur många grupperingar som ska förekomma i datumspannet
-      // mellan startdatum och slutdatum om man delar in det i månader ($month_interval)
-      $month_period = new DatePeriod($startdate, $month_interval, $enddate);
-
-      // loop för varje månad i datumspannet
-      foreach ($month_period as $month) {
-        // ta ut sista datumet i månaden
-        // t = sista dagens nummer i månaden, ex. 31
-        $days_of_month = $month->format("t");
-        $end_of_month = new DateTime($month->format("Y-m-t"));
-        // måste lägga till en extra dag för att datumintervallen
-        // ska fungera av någon anledning
-        $end_of_month->add(new DateInterval('P1D'));
-
-        // fastställ hur månaden ska grupperas
-        // P1D = 1 dag = dagsvis
-        $day_interval = new DateInterval('P1D');
-
-        // fastställ hur många grupperingar (av dagar) som ska förekomma i månaden
-        // antalet dagar mellan första dagen i månaden och sista dagen i månaden
-        $day_period = new DatePeriod($month, $day_interval, $end_of_month);
-
-        // den totala bredden av månaden beror på antalet dagar
-        // en fullösning...
-        $width = $days_of_month*15;
-
-        // skriv ut HTML-koden för respektive månad
-        echo "<div class='month' style='width:".$width."px'>";
-        echo   "<div class='dashes' style='width:".$width."px'></div>";
-        echo   "<div class='startdate'>".$month->format("j M Y")."</div>";
-        echo   "<div class='enddate'>".$month->format("t M")."</div>";
-        echo   "<div class='clearfix'></div>";
-
-        // loop för varje dag i månaden
-        foreach ($day_period as $day) {
-          // gör om till time för att kunna jämföra med andra datum
-          $day_totime = strtotime($day->format("Y-m-d"));
-
-          // klass för dagens div (booked_fm och/elelr booked_em)
-          $class = "";
-
-          // loop för alla bokningar av det aktuella klassrummet (se SQL query ovanför i koden)
-          // avgör om den finns en eller flera överlappande bokning för respektive dag
-          foreach ($bookings as $booking) {
-            // gör om till time för att kunna jämföra datum
-            $bk_startdate = strtotime($booking["booking_startdate"]);
-            $bk_enddate = strtotime($booking["booking_enddate"]);
-            $bk_timeperiod = $booking["timeperiod_id"];
-
-            // om det finns en överlappande bokning: markera som "bokad" med css-klass
-            if ($day_totime >= $bk_startdate && $day_totime <= $bk_enddate) {
-              if ($bk_timeperiod == 1)
-                $class .= " booked_fm";
-              else if ($bk_timeperiod == 2)
-                $class .= " booked_em";
-            }
-          }
-
-          // skriv ut HTML-koden för respektive dag
-          // de tomma divarna blir orange respektive röd om
-          // de har css-klasserna booked_fm eller booked_em
-          echo "<div class='day$class' id='".$day->format("Y-m-d")."'>";
-          echo   "<div></div>";
-          echo   "<div></div>";
-          echo   "<span>".$day->format("j")."</span>";
-          echo "</div>";
-        }
-
-        // avsluta diven för månad
-        echo   "<div class='clearfix'></div>";
-        echo "</div>";
-      }
-
-      // skriv ut länk för att visa fler månader i kalendern
-      echo "<a href='?course=$course_id&classroom=$classroom_id&months=".($months_to_show+6)."'>[ Visa fler månader ]</a>";
-      ?>
-
     </div>
 
   <?php } ?>
